@@ -1,12 +1,8 @@
 use std::io::Error;
-use exercise_rust::{double_it, allocate, get_input};
+use exercise_rust::{double_it, allocate, verify, get_input};
 
 fn main() -> Result<(), Error> {
-    if get_input()? == "5" {
-        println!("Correct");
-    } else {
-        println!("Wrong");
-    }
+    println!("{}", verify(get_input()?.as_str()));
 
     println!("{}", allocate());
 
