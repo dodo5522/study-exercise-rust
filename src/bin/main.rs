@@ -1,8 +1,9 @@
 use std::io::Error;
-use exercise_rust::{double_it, allocate, verify, get_input};
+use exercise_rust::{double_it, allocate, verify, StdInReader};
 
 fn main() -> Result<(), Error> {
-    println!("{}", verify(get_input()?.as_str()));
+    let reader = StdInReader{};
+    println!("{}", verify(&reader)?);
 
     println!("{}", allocate());
 

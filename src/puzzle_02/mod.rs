@@ -1,16 +1,25 @@
 use std::io::{stdin, Error};
 
-pub fn get_input() -> Result<String, Error> {
-    let mut i = String::new();
-    stdin().read_line(&mut i)?;
-    Ok(i.trim().into())
+pub trait InputReader {
+    fn read_line(&self) -> Result<String, Error>;
 }
 
-pub fn verify(input: &str) -> &'static str {
+pub struct StdInReader;
+
+impl InputReader for StdInReader {
+    fn read_line(&self) -> Result<String, Error> {
+        let mut i = String::new();
+        stdin().read_line(&mut i)?;
+        Ok(i.trim().into())
+    }
+}
+
+pub fn verify(reader: &impl InputReader) -> Result<&'static str, Error> {
+    let input = reader.read_line()?;
     if input == "5" {
-        "Correct"
+        Ok("Correct")
     } else {
-        "Wrong"
+        Ok("Wrong")
     }
 }
 
@@ -18,10 +27,28 @@ pub fn verify(input: &str) -> &'static str {
 mod tests {
     use super::*;
 
+    struct TestReader {
+        input: String,
+    }
+
+    impl InputReader for TestReader {
+        fn read_line(&self) -> Result<String, Error> {
+            Ok(self.input.to_owned())
+        }
+    }
+
     #[test]
     fn test_verify() {
-        assert_eq!(verify("4"), "Wrong");
-        assert_eq!(verify("5"), "Correct");
-        assert_eq!(verify("6"), "Wrong");
+        let mut reader = TestReader{
+            input: String::from(""),
+        };
+        assert_eq!(verify(&reader).unwrap(), "Wrong");
+
+        reader.input = String::from("4");
+        assert_eq!(verify(&reader).unwrap(), "Wrong");
+        reader.input = String::from("5");
+        assert_eq!(verify(&reader).unwrap(), "Correct");
+        reader.input = String::from("6");
+        assert_eq!(verify(&reader).unwrap(), "Wrong");
     }
 }
