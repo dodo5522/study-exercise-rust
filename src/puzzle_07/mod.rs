@@ -14,3 +14,9 @@ impl From<Degrees> for Radians {
         Self(degrees.0 * PI / 180.0)
     }
 }
+
+impl From<Radians> for Degrees {
+    fn from(radians: Radians) -> Self {
+        Self(radians.0 * 180.0 / PI)
+    }
+}

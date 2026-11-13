@@ -1,11 +1,13 @@
+use exercise_rust::{Degrees, Radians, StdInReader, allocate, double_it, overflow, verify};
 use std::io::Error;
-use exercise_rust::{double_it, allocate, verify, StdInReader, overflow,
-};
 
 fn main() -> Result<(), Error> {
+    let degree = Degrees(180.0);
+    let radian: Radians = degree.into();
+    let degree2: Degrees = radian.into();
+    println!("{}", degree2.0);
 
-
-    let reader = StdInReader{};
+    let reader = StdInReader {};
     println!("{}", verify(&reader)?);
 
     println!("{}", allocate());
